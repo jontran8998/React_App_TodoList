@@ -5,8 +5,8 @@ import Todos from './components/Todos';
 import './App.css';
 import Header from './components/layout/Header'
 import AddTodo from './components/AddTodo'
-import uuid from 'uuid'
 import About from './components/pages/About'
+import PropTypes from 'prop-types'
 
 export class App extends Component {
 
@@ -31,16 +31,18 @@ export class App extends Component {
   }
   //delete todo
   delTodo = (id) => {
-    this.setState({ todos: [...this.state.todos.filter(todo => todo.id !== id)] })
+    axios.delete(`https://jsonplaceholder.typicode.com/todos/${id}`).then(
+      res => this.setState({ todos: [...this.state.todos.filter(todo => todo.id !== id)] })
+    )
+
   }
   //Add Todo
   addTodo = (title) => {
-    const newTodo = {
-      id: uuid.v4(),
+    axios.post('https://jsonplaceholder.typicode.com/todos', {
       title,
-      completed: false,
-    }
-    this.setState({ todos: [...this.state.todos, newTodo] })
+      completed: false
+    }).then(res => this.setState({ todos: [...this.state.todos, res.data] }))
+
   }
   render() {
     return (
@@ -59,6 +61,13 @@ export class App extends Component {
       </div>
     );
   }
+}
+
+
+Todos.propTypes = {
+  todos: PropTypes.array.isRequired,
+  markComplete: PropTypes.func.isRequired,
+  delTodo: PropTypes.func.isRequired
 }
 
 export default App;
