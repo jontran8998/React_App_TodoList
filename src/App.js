@@ -57,8 +57,8 @@ export class App extends Component {
 
       <div className="App">
         <div className="container">
-          <Header />
           <Router>
+            <Header />
             <Route exact path="/">
               <AddTodo addTodo={this.addTodo} />
               <Todos todos={this.state.todos} markComplete={this.markComplete} delTodo={this.delTodo} />
